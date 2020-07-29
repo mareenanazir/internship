@@ -3,6 +3,7 @@ TOTAL_RECOVERED = 'total_recovered'
 TOTAL_DEATHS = 'total_deaths'
 COUNTRY = 'country'
 MEASURE = 'measure'
+EFFICIENCY = 'efficiency'
 
 # filenames
 COVID_CASES_STATS_FILE = 'covid_cases_stats.csv'

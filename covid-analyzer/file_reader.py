@@ -1,7 +1,7 @@
 import csv
 from pathlib import Path
 
-from .constants import (TOTAL_CASES, TOTAL_RECOVERED, COUNTRY, COVID_CASES_STATS_FILE, COVID_SAFETY_MEASURES_FILE,
+from constants import (TOTAL_CASES, TOTAL_RECOVERED, COUNTRY, COVID_CASES_STATS_FILE, COVID_SAFETY_MEASURES_FILE,
                         MEASURE, TOTAL_DEATHS)
 
 
@@ -18,7 +18,7 @@ class SafetyMeasure:
     def __init__(self, measure, country):
         self.measure = measure
         self.countries = [country]
-        self.count = 0
+        self.count = 1
 
 
 class FileParser:
@@ -52,7 +52,7 @@ class FileParser:
 
             for record in covid_safety_measures_records:
                 measure = record[MEASURE]
-                country = record[country]
+                country = record[COUNTRY]
                 is_measure_updated = False
                 for i in range(len(measures)):
                     if measures[i].measure == measure:
@@ -60,11 +60,13 @@ class FileParser:
                         measures[i].count += 1
                         is_measure_updated = True
 
-                if is_measure_updated:
+                if not is_measure_updated:
                     measures.append(SafetyMeasure(measure=measure, country=country))
 
                 if all([country, measure]):
-                    covid_record = next((record for record in covid_records if record.country == country), None)
-                    covid_record.measures.append(measure)
+                    covid_record = next(filter(lambda record: record.country == country,
+                                               (record for record in covid_records)), None)
+                    if covid_record:
+                        covid_record.measures.append(measure)
 
-        return covid_records
+        return measures

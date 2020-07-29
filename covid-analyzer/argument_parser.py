@@ -26,7 +26,7 @@ class ArgumentParser:
 
         args = parser.parse_args()
 
-        if not (args.a or args.b or args.c):
+        if not (args.a or args.b or args.c or args.d):
             parser.error('No arguments provided.')
 
         return args

@@ -11,14 +11,14 @@ class Calculator:
         country_record = next((record for record in self.covid_records if record.country == country), None)
         if not country_record:
             raise Exception('Country not found!')
-        return round(country_record.total_recovered / country_record.total_cases, 2)
+        return round(int(country_record.total_recovered) / int(country_record.total_cases), 2)
 
     def get_death_average(self, measure):
         total_deaths = 0
         total_countries = 0
         for record in self.covid_records:
             if measure in record.measures:
-                total_deaths += record.total_deaths
+                total_deaths += int(record.total_deaths)
                 total_countries += 1
         if not total_countries:
             raise Exception('Measure Not Found!')
@@ -33,8 +33,10 @@ class Calculator:
             efficiency = 0
 
             for country in measure.countries:
-                country_record = next((record for record in self.covid_records if record.country == country), None)
-                efficiency += country_record.total_deaths
+                country_record = next(filter(lambda record: record.country == country,
+                                             (record for record in self.covid_records)), None)
+                if country_record:
+                    efficiency += int(country_record.total_deaths)
             measures_efficiency.append({
                 'measure': measure.measure,
                 'efficiency': efficiency

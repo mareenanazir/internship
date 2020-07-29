@@ -1,6 +1,7 @@
-from .argument_parser import ArgumentParser
-from .calculator import Calculator
-from .file_reader import FileParser
+from argument_parser import ArgumentParser
+from calculator import Calculator
+from file_reader import FileParser
+from constants import MEASURE, EFFICIENCY
 
 
 def main():
@@ -18,10 +19,10 @@ def main():
     if args.c:
         measures = calculator.get_safety_measures_efficiency()
         for measure in measures:
-            print('measure: {} efficiency: {}'.format(measure.measure, measure.efficiency))
+            print('measure: {} efficiency: {}'.format(measure[MEASURE], measure[EFFICIENCY]))
     if args.d:
         calculator.plot_measure_efficiency()
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()
